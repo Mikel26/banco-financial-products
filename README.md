@@ -41,14 +41,14 @@ pnpm test:coverage
 
 ## 🎯 Funcionalidades (Path SSR + deseables habituales)
 
-| # | Funcionalidad | Estado |
-|---|---|---|
-| F1 | Listado de productos financieros | ✅ Path SSR |
-| F2 | Búsqueda por texto (nombre / descripción) | ✅ Path SSR |
-| F3 | Selector de cantidad (5, 10, 20) + total de resultados | ✅ Path SSR |
-| F4 | Agregar producto con validaciones | ✅ Path SSR |
-| F5 | Editar producto (id deshabilitado) | ✅ Deseable SSR, implementado |
-| F6 | Eliminar producto | ❌ Alcance Senior — fuera de scope |
+| #   | Funcionalidad                                          | Estado                             |
+| --- | ------------------------------------------------------ | ---------------------------------- |
+| F1  | Listado de productos financieros                       | ✅ Path SSR                        |
+| F2  | Búsqueda por texto (nombre / descripción)              | ✅ Path SSR                        |
+| F3  | Selector de cantidad (5, 10, 20) + total de resultados | ✅ Path SSR                        |
+| F4  | Agregar producto con validaciones                      | ✅ Path SSR                        |
+| F5  | Editar producto (id deshabilitado)                     | ✅ Deseable SSR, implementado      |
+| F6  | Eliminar producto                                      | ❌ Alcance Senior — fuera de scope |
 
 **Calidad transversal aplicada como estándar habitual (no como features extra):**
 
@@ -108,11 +108,14 @@ Durante el desarrollo se identificaron observaciones del backend provisto.
 **No fueron modificadas** (se respeta la separación de responsabilidades), pero
 se documentan como feedback para el equipo backend:
 
-1. **CORS deshabilitado** — `cors: true` comentado en `main.ts`. Resuelto en el frontend vía `proxy.conf.json`.
-2. **Validación de `name`** — el DTO usa `@MinLength(6)` mientras el PDF indica 5. El frontend se alinea al backend (6) para evitar errores 400.
-3. **DTO sin reglas de negocio** — no valida `id` (min 3), `date_release ≥ hoy`, ni `date_revision = date_release + 1 año`. Implementadas en el frontend con custom validators.
-4. **`verification/:id`** retorna un boolean primitivo, no un objeto. El frontend lo tipa acordemente.
-5. **Sin persistencia** — los productos viven en memoria; cada reinicio del server pierde datos. Documentado como limitación del entorno de prueba.
+1. **CORS deshabilitado** — `// cors: true` comentado en `main.ts`. Resuelto en el frontend vía `proxy.conf.json` (`/bp` → `:3002`). _(Verificado.)_
+2. **Validación de `name`** — el DTO usa `@MinLength(6)` mientras el PDF indica 5. El frontend se alinea al backend (6) para evitar errores 400. _(Verificado.)_
+3. **DTO sin reglas de negocio** — `id` solo tiene `@IsNotEmpty()` (sin min/max); no valida `date_release ≥ hoy` ni `date_revision = date_release + 1 año`. Implementadas en el frontend con custom validators. _(Verificado.)_
+4. **`verification/:id`** retorna un boolean primitivo (`products.some(...)`), no un objeto. El frontend lo tipa acordemente. _(Verificado.)_
+5. **Sin persistencia** — los productos viven en memoria (`products: ProductInterface[] = []`); cada reinicio pierde datos. _(Verificado.)_
+6. **`PUT /products/:id` sin validación** — a diferencia de `POST` (`@Body({ validate: true })`), el update usa `@Body()` sin validación: las reglas del DTO **no** se aplican al editar. El frontend es la única garantía en F5. _(Hallazgo nuevo.)_
+7. **Backend sin datos semilla** — el listado arranca vacío; para ver F1/F2/F3 hay que crear productos primero con F4. El frontend contempla un _empty state_ además del skeleton. _(Hallazgo nuevo.)_
+8. **`GET /products/:id` sin envolver** — devuelve el producto directo (no `{ data }`) y responde 404 si no existe. Como F5 prefiltra desde el estado en memoria, un refresh directo en `/products/edit/:id` requiere recargar productos antes de poblar el formulario. _(Nota de implementación.)_
 
 ---
 
