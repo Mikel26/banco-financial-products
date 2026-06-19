@@ -1,0 +1,41 @@
+// Estilos mínimos del shell — Fase 0.
+// Los design tokens y mixins compartidos llegan en la Fase 2; aquí se usan
+// valores literales de forma deliberadamente acotada.
+
+.app-header {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  padding: 1rem 1.5rem;
+  background: #ffd200;
+  color: #1a1a1a;
+
+  &__brand {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+
+  &__subtitle {
+    font-size: 0.875rem;
+    color: #4a4a3a;
+  }
+}
+
+.app-main {
+  padding: 2rem 1.5rem;
+}
+
+.app-placeholder {
+  max-width: 32rem;
+
+  &__title {
+    margin: 0 0 0.5rem;
+    font-size: 1.5rem;
+  }
+
+  &__text {
+    margin: 0;
+    color: #6b6b6b;
+  }
+}

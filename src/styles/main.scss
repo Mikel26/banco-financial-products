@@ -1,0 +1,30 @@
+// Entrypoint de estilos globales — Fase 0 (reset y base mínimos).
+//
+// El design system completo (tokens, mixins, tipografía, reset propio en
+// parciales `_variables`, `_mixins`, `_reset`, `_typography`) se construye en
+// la Fase 2 y se importará desde aquí.
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #1a1a1a;
+  background: #ffffff;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
