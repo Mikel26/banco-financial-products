@@ -7,6 +7,15 @@
   overflow-x: auto;
 }
 
+.products__toolbar {
+  margin-bottom: $spacing-lg;
+}
+
+.products__search {
+  display: block;
+  max-width: 360px;
+}
+
 .products-table {
   width: 100%;
   border-collapse: collapse;

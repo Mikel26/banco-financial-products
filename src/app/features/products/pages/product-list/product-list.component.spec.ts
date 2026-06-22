@@ -1,6 +1,6 @@
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 
 import { Product } from '../../models/product.model';
 import { ProductListComponent } from './product-list.component';
@@ -21,6 +21,7 @@ describe('ProductListComponent', () => {
   const url = '/bp/products';
   let httpMock: HttpTestingController;
   let fixture: ComponentFixture<ProductListComponent>;
+  let component: ProductListComponent;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -29,6 +30,7 @@ describe('ProductListComponent', () => {
     });
     httpMock = TestBed.inject(HttpTestingController);
     fixture = TestBed.createComponent(ProductListComponent);
+    component = fixture.componentInstance;
   });
 
   afterEach(() => httpMock.verify());
@@ -71,4 +73,38 @@ describe('ProductListComponent', () => {
     img.dispatchEvent(new Event('error'));
     expect(img.style.display).toBe('none');
   });
+
+  it('filtra la lista al escribir en la búsqueda (con debounce)', fakeAsync(() => {
+    fixture.detectChanges();
+    httpMock.expectOne(url).flush({
+      data: [
+        makeProduct({ id: 'a', name: 'Visa Gold' }),
+        makeProduct({ id: 'b', name: 'Mastercard' }),
+      ],
+    });
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelectorAll('tbody tr').length).toBe(2);
+
+    component.searchControl.setValue('visa');
+    tick(300);
+    fixture.detectChanges();
+
+    const rows = fixture.nativeElement.querySelectorAll('tbody tr');
+    expect(rows.length).toBe(1);
+    expect(rows[0].textContent).toContain('Visa Gold');
+  }));
+
+  it('muestra el estado "sin resultados" cuando la búsqueda no coincide', fakeAsync(() => {
+    fixture.detectChanges();
+    httpMock.expectOne(url).flush({ data: [makeProduct({ id: 'a', name: 'Visa' })] });
+    fixture.detectChanges();
+
+    component.searchControl.setValue('zzz');
+    tick(300);
+    fixture.detectChanges();
+
+    const empty = fixture.nativeElement.querySelector('.products__empty');
+    expect(empty).toBeTruthy();
+    expect(empty.textContent).toContain('Sin resultados');
+  }));
 });

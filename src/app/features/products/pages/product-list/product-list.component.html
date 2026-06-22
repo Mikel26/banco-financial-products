@@ -1,12 +1,27 @@
 <section class="products">
+  <div class="products__toolbar">
+    <app-text-input
+      class="products__search"
+      [formControl]="searchControl"
+      placeholder="Buscar por nombre o descripción"
+    />
+  </div>
+
   @if (state.loading()) {
     <app-product-table-skeleton [rows]="state.pageSize()" />
   } @else if (state.error()) {
     <div class="products__error" role="alert">{{ state.error() }}</div>
-  } @else if (state.visibleProducts().length === 0) {
+  } @else if (state.totalResults() === 0) {
     <div class="products__empty">
-      <p class="products__empty-title">No hay productos para mostrar</p>
-      <p class="products__empty-hint">Crea un producto para empezar.</p>
+      @if (state.searchTerm()) {
+        <p class="products__empty-title">Sin resultados</p>
+        <p class="products__empty-hint">
+          No se encontraron productos para «{{ state.searchTerm() }}».
+        </p>
+      } @else {
+        <p class="products__empty-title">No hay productos para mostrar</p>
+        <p class="products__empty-hint">Crea un producto para empezar.</p>
+      }
     </div>
   } @else {
     <table class="products-table">
