@@ -1,0 +1,22 @@
+<table class="skeleton-table" aria-hidden="true" aria-busy="true">
+  <thead>
+    <tr>
+      <th><span class="skeleton skeleton--text"></span></th>
+      <th><span class="skeleton skeleton--text"></span></th>
+      <th><span class="skeleton skeleton--text"></span></th>
+      <th><span class="skeleton skeleton--text"></span></th>
+      <th><span class="skeleton skeleton--text"></span></th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (row of skeletonRows(); track $index) {
+      <tr>
+        <td><span class="skeleton skeleton--circle"></span></td>
+        <td><span class="skeleton skeleton--text"></span></td>
+        <td><span class="skeleton skeleton--text"></span></td>
+        <td><span class="skeleton skeleton--text"></span></td>
+        <td><span class="skeleton skeleton--text"></span></td>
+      </tr>
+    }
+  </tbody>
+</table>

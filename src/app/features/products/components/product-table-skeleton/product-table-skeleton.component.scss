@@ -1,0 +1,94 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.skeleton-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: $color-background;
+  border: 1px solid $color-border;
+  border-radius: $radius-md;
+  overflow: hidden;
+
+  th,
+  td {
+    padding: $spacing-md;
+    border-bottom: 1px solid $color-border;
+  }
+
+  thead th {
+    background: $color-background-alt;
+  }
+
+  tbody tr:last-child td {
+    border-bottom: none;
+  }
+}
+
+.skeleton {
+  display: inline-block;
+  width: 80%;
+  background: linear-gradient(
+    90deg,
+    $color-skeleton-base 0%,
+    $color-skeleton-highlight 50%,
+    $color-skeleton-base 100%
+  );
+  background-size: 200% 100%;
+  border-radius: $radius-sm;
+  animation: skeleton-shimmer 1.5s ease-in-out infinite;
+
+  &--text {
+    height: 14px;
+  }
+
+  &--circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+}
+
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+// En móvil, el skeleton imita las tarjetas del listado (no la tabla): cada fila
+// es una tarjeta con el círculo arriba y las líneas apiladas. Así la precarga
+// coincide con el layout real y no desborda.
+@include mobile {
+  .skeleton-table {
+    border: none;
+
+    thead {
+      display: none;
+    }
+
+    tr {
+      display: block;
+      margin-bottom: $spacing-md;
+      padding: $spacing-md;
+      background: $color-background;
+      border: 1px solid $color-border;
+      border-radius: $radius-md;
+    }
+
+    td {
+      display: block;
+      padding: $spacing-xs 0;
+      border-bottom: none;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none;
+    opacity: 0.7;
+  }
+}

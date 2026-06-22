@@ -1,0 +1,50 @@
+<section class="products">
+  @if (state.loading()) {
+    <app-product-table-skeleton [rows]="state.pageSize()" />
+  } @else if (state.error()) {
+    <div class="products__error" role="alert">{{ state.error() }}</div>
+  } @else if (state.visibleProducts().length === 0) {
+    <div class="products__empty">
+      <p class="products__empty-title">No hay productos para mostrar</p>
+      <p class="products__empty-hint">Crea un producto para empezar.</p>
+    </div>
+  } @else {
+    <table class="products-table">
+      <thead>
+        <tr>
+          <th scope="col">Logo</th>
+          <th scope="col">Nombre</th>
+          <th scope="col">Descripción</th>
+          <th scope="col">Fecha de liberación</th>
+          <th scope="col">Fecha de reestructuración</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (product of state.visibleProducts(); track product.id) {
+          <tr>
+            <td data-label="Logo">
+              <span class="logo">
+                <img
+                  class="logo__img"
+                  [src]="product.logo"
+                  [alt]="product.name"
+                  loading="lazy"
+                  decoding="async"
+                  (error)="onLogoError($event)"
+                />
+              </span>
+            </td>
+            <td data-label="Nombre">{{ product.name }}</td>
+            <td data-label="Descripción" class="cell-desc">{{ product.description }}</td>
+            <td data-label="Fecha de liberación">
+              {{ product.date_release | date: 'dd/MM/yyyy' : 'UTC' }}
+            </td>
+            <td data-label="Fecha de reestructuración">
+              {{ product.date_revision | date: 'dd/MM/yyyy' : 'UTC' }}
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</section>

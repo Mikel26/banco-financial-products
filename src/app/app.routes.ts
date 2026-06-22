@@ -1,16 +1,22 @@
 import { Routes } from '@angular/router';
 
 /**
- * Rutas raíz de la aplicación.
- *
- * La ruta `''` es **temporal de la Fase 2**: renderiza la vitrina de componentes
- * del design system. En la Fase 3 se reemplaza por el feature `products` (lazy
- * vía `loadChildren`).
+ * Rutas raíz de la aplicación. El feature `products` se carga de forma diferida
+ * (lazy) con `loadChildren`; sus rutas hijas viven en `products.routes.ts`.
  */
 export const routes: Routes = [
   {
     path: '',
-    loadComponent: () =>
-      import('./shared/showcase/showcase.component').then((m) => m.ShowcaseComponent),
+    redirectTo: 'products',
+    pathMatch: 'full',
+  },
+  {
+    path: 'products',
+    loadChildren: () =>
+      import('./features/products/products.routes').then((m) => m.PRODUCTS_ROUTES),
+  },
+  {
+    path: '**',
+    redirectTo: 'products',
   },
 ];
