@@ -1,0 +1,21 @@
+<div class="field">
+  @if (label()) {
+    <label class="field__label" [for]="inputId">{{ label() }}</label>
+  }
+  <input
+    class="field__control"
+    [id]="inputId"
+    [type]="type()"
+    [value]="value()"
+    [placeholder]="placeholder()"
+    [disabled]="disabled()"
+    [class.field__control--error]="!!errorMessage()"
+    [attr.aria-invalid]="!!errorMessage()"
+    [attr.aria-describedby]="errorMessage() ? inputId + '-error' : null"
+    (input)="onInput($event)"
+    (blur)="onBlur()"
+  />
+  @if (errorMessage()) {
+    <small class="field__error" role="alert" [id]="inputId + '-error'">{{ errorMessage() }}</small>
+  }
+</div>

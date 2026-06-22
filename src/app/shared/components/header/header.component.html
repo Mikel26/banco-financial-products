@@ -1,0 +1,9 @@
+<header class="header">
+  <div class="header__brand">
+    <span class="header__logo" aria-hidden="true">🏦</span>
+    <span class="header__title">{{ title() }}</span>
+  </div>
+  @if (subtitle()) {
+    <span class="header__subtitle">{{ subtitle() }}</span>
+  }
+</header>

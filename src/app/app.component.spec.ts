@@ -20,7 +20,7 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
 
-    const header = fixture.nativeElement.querySelector('.app-header');
+    const header = fixture.nativeElement.querySelector('app-header');
     expect(header?.textContent).toContain('Banco');
   });
 });

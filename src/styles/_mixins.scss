@@ -1,0 +1,93 @@
+@use 'variables' as *;
+
+// Breakpoints (mobile-first: `mobile`/`tablet` son max-width; `desktop` min-width).
+@mixin mobile {
+  @media (max-width: $bp-mobile) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (max-width: $bp-tablet) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: $bp-desktop) {
+    @content;
+  }
+}
+
+// Anillo de foco accesible y consistente para elementos interactivos.
+// Usa un color oscuro (no el amarillo de marca, que no alcanza 3:1 sobre fondos
+// claros) para cumplir WCAG 2.1 SC 1.4.11 en botones y campos.
+@mixin focus-visible {
+  &:focus-visible {
+    // Aro de foco gris pizarra: redondeado (sigue el border-radius) y con
+    // separación; cumple WCAG 2.1 SC 1.4.11. Se mantiene un `outline`
+    // transparente para que el foco siga visible en modo de alto contraste.
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    box-shadow:
+      0 0 0 2px $color-background,
+      0 0 0 4px $color-focus-ring;
+  }
+}
+
+// Campo de formulario base (borde, radio, padding) reutilizado por inputs/select.
+@mixin field-base {
+  width: 100%;
+  padding: $spacing-sm $spacing-md;
+  border: 1px solid $color-border;
+  border-radius: $radius-sm;
+  background: $color-background;
+  color: $color-text-primary;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+
+  &::placeholder {
+    color: $color-text-secondary;
+  }
+
+  &:disabled {
+    background: $color-background-alt;
+    color: $color-text-secondary;
+    cursor: not-allowed;
+  }
+}
+
+// Estructura BEM compartida por los campos del design system (text-input,
+// date-input, select). Centraliza label/control/error en un solo lugar para
+// evitar la duplicación entre los tres componentes. Se incluye dentro de `.field`.
+@mixin form-field {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs;
+
+  &__label {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    color: $color-text-secondary;
+  }
+
+  &__control {
+    @include field-base;
+    @include focus-visible;
+
+    &:focus {
+      border-color: $color-primary;
+    }
+
+    &--error,
+    &--error:focus {
+      border-color: $color-error;
+    }
+  }
+
+  &__error {
+    color: $color-error;
+    font-size: $font-size-sm;
+  }
+}

@@ -1,0 +1,27 @@
+<div class="field">
+  @if (label()) {
+    <label class="field__label" [for]="selectId">{{ label() }}</label>
+  }
+  <select
+    class="field__control"
+    [id]="selectId"
+    [disabled]="disabled()"
+    [class.field__control--error]="!!errorMessage()"
+    [attr.aria-invalid]="!!errorMessage()"
+    [attr.aria-describedby]="errorMessage() ? selectId + '-error' : null"
+    (change)="onSelect($event)"
+    (blur)="onBlur()"
+  >
+    @if (placeholder()) {
+      <option value="" disabled [selected]="value() === null">{{ placeholder() }}</option>
+    }
+    @for (option of options(); track option.value) {
+      <option [value]="option.value" [selected]="isSelected(option)">
+        {{ option.label }}
+      </option>
+    }
+  </select>
+  @if (errorMessage()) {
+    <small class="field__error" role="alert" [id]="selectId + '-error'">{{ errorMessage() }}</small>
+  }
+</div>

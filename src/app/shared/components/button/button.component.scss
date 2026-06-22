@@ -1,0 +1,56 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-sm;
+  min-height: 40px;
+  padding: $spacing-sm $spacing-lg;
+  border-radius: $radius-sm;
+  font-size: $font-size-base;
+  font-weight: $font-weight-medium;
+  line-height: 1;
+  transition:
+    background-color 0.15s ease,
+    opacity 0.15s ease,
+    box-shadow 0.15s ease;
+  @include focus-visible;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &--primary {
+    background: $color-primary;
+    color: $color-text-primary;
+
+    &:hover:not(:disabled) {
+      background: $color-primary-hover;
+    }
+  }
+
+  &--secondary {
+    background: $color-secondary;
+    color: $color-text-primary;
+
+    &:hover:not(:disabled) {
+      background: $color-secondary-hover;
+    }
+  }
+
+  &--ghost {
+    background: transparent;
+    color: $color-text-primary;
+
+    &:hover:not(:disabled) {
+      background: $color-secondary;
+    }
+  }
+
+  &--full {
+    width: 100%;
+  }
+}

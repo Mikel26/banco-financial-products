@@ -1,0 +1,9 @@
+@use 'mixins' as *;
+
+.field {
+  @include form-field;
+
+  &__control {
+    cursor: pointer;
+  }
+}

@@ -1,0 +1,5 @@
+@use 'mixins' as *;
+
+.field {
+  @include form-field;
+}
