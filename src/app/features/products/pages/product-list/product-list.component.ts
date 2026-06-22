@@ -4,19 +4,30 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 
+import {
+  SelectComponent,
+  SelectOption,
+} from '../../../../shared/components/select/select.component';
 import { TextInputComponent } from '../../../../shared/components/text-input/text-input.component';
 import { ProductTableSkeletonComponent } from '../../components/product-table-skeleton/product-table-skeleton.component';
-import { ProductsStateService } from '../../services/products-state.service';
+import { PageSize, ProductsStateService } from '../../services/products-state.service';
 
 /**
  * Página de listado de productos financieros.
  * F1: carga + skeleton / error / empty-state / tabla (responsive).
- * F2: búsqueda con debounce (este archivo).
+ * F2: búsqueda con debounce.
+ * F3: selector de cantidad (5/10/20) + contador de resultados.
  */
 @Component({
   selector: 'app-product-list',
   standalone: true,
-  imports: [DatePipe, ReactiveFormsModule, TextInputComponent, ProductTableSkeletonComponent],
+  imports: [
+    DatePipe,
+    ReactiveFormsModule,
+    TextInputComponent,
+    SelectComponent,
+    ProductTableSkeletonComponent,
+  ],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -27,10 +38,22 @@ export class ProductListComponent implements OnInit {
   /** Búsqueda (F2): se aplica con debounce para no filtrar en cada pulsación. */
   readonly searchControl = new FormControl('', { nonNullable: true });
 
+  /** Cantidad de registros (F3): tamaños soportados por el listado. */
+  readonly pageSizeOptions: SelectOption[] = [
+    { value: 5, label: '5' },
+    { value: 10, label: '10' },
+    { value: 20, label: '20' },
+  ];
+  readonly pageSizeControl = new FormControl<PageSize>(5, { nonNullable: true });
+
   constructor() {
     this.searchControl.valueChanges
       .pipe(debounceTime(300), distinctUntilChanged(), takeUntilDestroyed())
       .subscribe((term) => this.state.setSearchTerm(term));
+
+    this.pageSizeControl.valueChanges
+      .pipe(takeUntilDestroyed())
+      .subscribe((size) => this.state.setPageSize(size));
   }
 
   ngOnInit(): void {

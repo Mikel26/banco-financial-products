@@ -16,6 +16,24 @@
   max-width: 360px;
 }
 
+.products__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $spacing-md;
+  margin-top: $spacing-md;
+}
+
+.products__count {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+}
+
+.products__page-size {
+  display: block;
+  width: 88px;
+}
+
 .products-table {
   width: 100%;
   border-collapse: collapse;

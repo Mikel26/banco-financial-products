@@ -107,4 +107,27 @@ describe('ProductListComponent', () => {
     expect(empty).toBeTruthy();
     expect(empty.textContent).toContain('Sin resultados');
   }));
+
+  it('cambia la cantidad mostrada con el selector (F3)', () => {
+    fixture.detectChanges();
+    const many = Array.from({ length: 12 }, (_, i) => makeProduct({ id: `id-${i}` }));
+    httpMock.expectOne(url).flush({ data: many });
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelectorAll('tbody tr').length).toBe(5);
+
+    component.pageSizeControl.setValue(10);
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelectorAll('tbody tr').length).toBe(10);
+  });
+
+  it('muestra el contador con el total de resultados (F3)', () => {
+    fixture.detectChanges();
+    const many = Array.from({ length: 12 }, (_, i) => makeProduct({ id: `id-${i}` }));
+    httpMock.expectOne(url).flush({ data: many });
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('.products__count').textContent).toContain(
+      '12 Resultados',
+    );
+  });
 });

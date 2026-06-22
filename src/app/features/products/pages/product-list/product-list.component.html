@@ -61,5 +61,17 @@
         }
       </tbody>
     </table>
+
+    <div class="products__footer">
+      <span class="products__count">
+        {{ state.totalResults() }}
+        {{ state.totalResults() === 1 ? 'Resultado' : 'Resultados' }}
+      </span>
+      <app-select
+        class="products__page-size"
+        [options]="pageSizeOptions"
+        [formControl]="pageSizeControl"
+      />
+    </div>
   }
 </section>
