@@ -1,19 +1,15 @@
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 
+import { errorInterceptor } from './core/interceptors/error.interceptor';
 import { routes } from './app.routes';
 
-/**
- * Configuración raíz de la aplicación (bootstrap standalone).
- *
- * En la Fase 1 se añadirá `withInterceptors([errorInterceptor])` a
- * `provideHttpClient` para el manejo centralizado de errores HTTP.
- */
+/** Configuración raíz de la aplicación (bootstrap standalone). */
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes, withComponentInputBinding()),
-    provideHttpClient(),
+    provideHttpClient(withInterceptors([errorInterceptor])),
   ],
 };
