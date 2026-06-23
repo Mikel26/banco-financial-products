@@ -3,17 +3,18 @@
 > Decisiones de arquitectura del reto técnico NTT Data — Frontend Angular SSR.
 > Formato: **Context → Decision → Consequences**.
 
-| ADR | Decisión | Estado |
-|---|---|---|
-| [001](#adr-001-standalone-components-en-lugar-de-ngmodules) | Standalone components | Aceptada |
-| [002](#adr-002-signals-para-state-management) | Signals para state management | Aceptada |
-| [003](#adr-003-sin-frameworks-de-estilos) | Sin frameworks de estilos | Aceptada |
-| [004](#adr-004-proxyconf-en-lugar-de-modificar-el-backend) | Proxy.conf en lugar de modificar backend | Aceptada |
-| [005](#adr-005-validación-de-name-con-minlength6) | `name` con MinLength(6) en frontend | Aceptada |
-| [006](#adr-006-jest-sobre-karma) | Jest sobre Karma | Aceptada |
-| [007](#adr-007-scope-funcional-ssr-f1f5-sin-f6) | Scope funcional SSR (F1–F5, sin F6) | Aceptada |
-| [008](#adr-008-skeleton-loader-custom-sin-librerías) | Skeleton loader custom | Aceptada |
-| [009](#adr-009-onpush--signals-en-toda-la-app) | OnPush + Signals en toda la app | Aceptada |
+| ADR                                                          | Decisión                                                    | Estado   |
+| ------------------------------------------------------------ | ----------------------------------------------------------- | -------- |
+| [001](#adr-001-standalone-components-en-lugar-de-ngmodules)  | Standalone components                                       | Aceptada |
+| [002](#adr-002-signals-para-state-management)                | Signals para state management                               | Aceptada |
+| [003](#adr-003-sin-frameworks-de-estilos)                    | Sin frameworks de estilos                                   | Aceptada |
+| [004](#adr-004-proxyconf-en-lugar-de-modificar-el-backend)   | Proxy.conf en lugar de modificar backend                    | Aceptada |
+| [005](#adr-005-validación-de-name-con-minlength6)            | `name` con MinLength(6) en frontend                         | Aceptada |
+| [006](#adr-006-jest-sobre-karma)                             | Jest sobre Karma                                            | Aceptada |
+| [007](#adr-007-scope-funcional-ssr-f1f5-sin-f6)              | Scope funcional SSR (F1–F5, sin F6)                         | Aceptada |
+| [008](#adr-008-skeleton-loader-custom-sin-librerías)         | Skeleton loader custom                                      | Aceptada |
+| [009](#adr-009-onpush--signals-en-toda-la-app)               | OnPush + Signals en toda la app                             | Aceptada |
+| [010](#adr-010-manejo-del-put-que-hace-echo-del-body-sin-id) | `PUT` hace echo del body sin `id` → el front reajunta el id | Aceptada |
 
 ---
 
@@ -89,10 +90,12 @@ punto (el validador del formulario).
 **Context:** El default de Angular es Karma + Jasmine; el PDF prefiere Jest.
 
 **Decision:** **Jest 29 + `jest-preset-angular`** (enfoque puro con `jest.config.js`
-+ `setup-jest.ts`), sustituyendo Karma/Jasmine.
+
+- `setup-jest.ts`), sustituyendo Karma/Jasmine.
 
 **Consequences:** Tests más rápidos y mejor DX, a cambio de configuración inicial.
 Notas de implementación:
+
 - Se usa la API moderna `setupZoneTestEnv` de `jest-preset-angular` v14+.
 - **Corrección sobre la spec original:** la clave de Jest es `setupFilesAfterEnv`,
   no `setupFilesAfterEach` (esta última no existe en Jest).
@@ -138,3 +141,30 @@ mejora el rendimiento.
 
 **Consequences:** Detección de cambios óptima y menos re-renders. Requiere usar
 signals/inmutabilidad en lugar de mutación directa de propiedades.
+
+---
+
+## ADR-010: Manejo del `PUT` que hace echo del body sin `id`
+
+**Context:** Descubierto en la revisión adversarial de la Fase 1. El endpoint
+`PUT /bp/products/:id` del backend, a diferencia de `POST`, usa `@Body()` **sin
+`validate: true`**: no valida el DTO. Además **devuelve en `data` el propio body
+que recibió**, que **no incluye `id`** (el id viaja en la URL). Es decir, el
+`data` de la respuesta no satisface el tipo `Product` (le falta `id`) y refleja el
+body enviado, no el registro mergeado del lado servidor.
+
+**Decision:**
+
+- En `ProductsApiService.update()`, **reajuntar el `id` de la URL** al resultado
+  (`map(res => ({ ...res.data, id }))`), haciéndolo prevalecer. Así el
+  `Observable<Product>` emite un `Product` completo y honesto con su tipo, con el
+  id autoritativo (el de la URL).
+- Mantener **toda la validación de edición en el cliente** (custom validators),
+  ya que el backend no valida en `PUT`: el frontend es la única garantía en F5.
+- En `ProductsStateService.updateProduct()`, **mergear sobre el registro
+  existente** (`{ ...product, ...updated }`) para no perder campos no devueltos.
+
+**Consequences:** Tipos honestos y código defensivo: si el backend añadiera
+validación o echo completo en el futuro, el reajunte del id sigue siendo correcto
+(idempotente). Se documenta como observación #6 (feedback al equipo backend) en el
+README.
