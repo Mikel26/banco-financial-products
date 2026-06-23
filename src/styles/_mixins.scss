@@ -92,4 +92,10 @@
     color: $color-error;
     font-size: $font-size-sm;
   }
+
+  // Texto de ayuda secundario bajo el campo (p. ej. valores autocalculados).
+  &__hint {
+    color: $color-text-secondary;
+    font-size: $font-size-sm;
+  }
 }

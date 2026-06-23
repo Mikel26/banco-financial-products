@@ -76,4 +76,35 @@ describe('DateInputComponent', () => {
       'Fecha inválida',
     );
   });
+
+  it('marca aria-required cuando required es true', () => {
+    const fixture = TestBed.createComponent(DateInputComponent);
+    fixture.componentRef.setInput('required', true);
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('input').getAttribute('aria-required')).toBe('true');
+  });
+
+  it('renderiza el hint y lo enlaza con aria-describedby', () => {
+    const fixture = TestBed.createComponent(DateInputComponent);
+    fixture.componentRef.setInput('hint', 'Se calcula automáticamente.');
+    fixture.detectChanges();
+
+    const input = fixture.nativeElement.querySelector('input');
+    const hint = fixture.nativeElement.querySelector('.field__hint');
+    expect(hint.textContent).toContain('Se calcula automáticamente.');
+    expect(input.getAttribute('aria-describedby')).toBe(hint.getAttribute('id'));
+  });
+
+  it('aria-describedby combina hint y error cuando hay ambos', () => {
+    const fixture = TestBed.createComponent(DateInputComponent);
+    fixture.componentRef.setInput('hint', 'Ayuda');
+    fixture.componentRef.setInput('errorMessage', 'Error');
+    fixture.detectChanges();
+
+    const describedBy = fixture.nativeElement
+      .querySelector('input')
+      .getAttribute('aria-describedby');
+    expect(describedBy).toContain('-hint');
+    expect(describedBy).toContain('-error');
+  });
 });

@@ -10,6 +10,7 @@
     [placeholder]="placeholder()"
     [disabled]="disabled()"
     [class.field__control--error]="!!errorMessage()"
+    [attr.aria-required]="required() || null"
     [attr.aria-invalid]="!!errorMessage()"
     [attr.aria-describedby]="errorMessage() ? inputId + '-error' : null"
     (input)="onInput($event)"

@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, forwardRef, input, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  forwardRef,
+  input,
+  signal,
+} from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 let uniqueId = 0;
@@ -27,10 +34,21 @@ export class DateInputComponent implements ControlValueAccessor {
   readonly errorMessage = input<string | null>(null);
   readonly min = input<string | null>(null);
   readonly max = input<string | null>(null);
+  readonly required = input<boolean>(false);
+  readonly hint = input<string>('');
 
   readonly inputId = `app-date-input-${(uniqueId += 1)}`;
   readonly value = signal<string>('');
   readonly disabled = signal<boolean>(false);
+
+  /** Ids que describen el campo (ayuda y/o error) para `aria-describedby`. */
+  readonly describedBy = computed(() => {
+    const ids = [
+      this.hint() ? `${this.inputId}-hint` : null,
+      this.errorMessage() ? `${this.inputId}-error` : null,
+    ].filter(Boolean);
+    return ids.length ? ids.join(' ') : null;
+  });
 
   private onChange: (value: string) => void = () => undefined;
   private onTouched: () => void = () => undefined;

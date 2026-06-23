@@ -69,4 +69,14 @@ describe('TextInputComponent', () => {
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('label')?.textContent).toContain('Nombre');
   });
+
+  it('marca aria-required cuando required es true (y lo omite si no)', () => {
+    const fixture = TestBed.createComponent(TextInputComponent);
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('input').getAttribute('aria-required')).toBeNull();
+
+    fixture.componentRef.setInput('required', true);
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('input').getAttribute('aria-required')).toBe('true');
+  });
 });

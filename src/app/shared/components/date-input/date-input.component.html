@@ -11,11 +11,15 @@
     [attr.min]="min()"
     [attr.max]="max()"
     [class.field__control--error]="!!errorMessage()"
+    [attr.aria-required]="required() || null"
     [attr.aria-invalid]="!!errorMessage()"
-    [attr.aria-describedby]="errorMessage() ? inputId + '-error' : null"
+    [attr.aria-describedby]="describedBy()"
     (input)="onInput($event)"
     (blur)="onBlur()"
   />
+  @if (hint()) {
+    <small class="field__hint" [id]="inputId + '-hint'">{{ hint() }}</small>
+  }
   @if (errorMessage()) {
     <small class="field__error" role="alert" [id]="inputId + '-error'">{{ errorMessage() }}</small>
   }

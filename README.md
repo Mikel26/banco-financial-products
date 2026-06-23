@@ -6,12 +6,13 @@
 ![Angular](https://img.shields.io/badge/Angular-17-DD0031?logo=angular&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript&logoColor=white)
 ![Jest](https://img.shields.io/badge/Jest-29.x-C21325?logo=jest&logoColor=white)
-![Coverage](https://img.shields.io/badge/coverage-94%25-success)
+![Coverage](https://img.shields.io/badge/coverage-97%25-success)
 
-> **Estado:** Fases 0–4 completadas — listado/búsqueda/cantidad (F1–F3), alta
+> **Estado:** Fases 0–5 completadas — listado/búsqueda/cantidad (F1–F3), alta
 > con validaciones (F4) y edición con guard de cambios sin guardar (F5),
-> funcionando contra el backend real. **Siguiente:** Fase 5 (responsive del
-> formulario + pulido final). Ver [Estado del proyecto](#-estado-del-proyecto).
+> formulario responsive y pulido de accesibilidad, funcionando contra el backend
+> real. **Siguiente:** Fase 6 (cobertura consolidada + cierre de documentación).
+> Ver [Estado del proyecto](#-estado-del-proyecto).
 
 ---
 
@@ -100,7 +101,7 @@ pnpm test            # corre la suite
 pnpm test:coverage   # reporte de cobertura
 ```
 
-> Cobertura actual: **~97 % statements / 98.5 % branches**, 114 tests.
+> Cobertura actual: **~97 % statements / 98.5 % branches**, 118 tests.
 
 ---
 
@@ -141,7 +142,7 @@ se documentan como feedback para el equipo backend:
 - [x] **Fase 2** — Design system SCSS + componentes shared (button, text-input, select, date-input, header)
 - [x] **Fase 3** — F1 listado + skeleton (responsive) · F2 búsqueda (debounce) · F3 cantidad + contador
 - [x] **Fase 4** — Custom validators (id async, release, revision) + F4 agregar + F5 editar + unsaved-changes guard + rutas `new`/`edit/:id` + toasts
-- [ ] **Fase 5** — Responsive del formulario + a11y polish final
+- [x] **Fase 5** — Formulario responsive (acciones a ancho completo en móvil) + pulido a11y (`aria-required`, `aria-busy`, `novalidate`, ayuda en campo autocalculado)
 - [ ] **Fase 6** — Cobertura consolidada + cierre de documentación
 
 ---
