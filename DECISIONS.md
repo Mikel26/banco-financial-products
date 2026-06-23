@@ -89,9 +89,8 @@ punto (el validador del formulario).
 
 **Context:** El default de Angular es Karma + Jasmine; el PDF prefiere Jest.
 
-**Decision:** **Jest 29 + `jest-preset-angular`** (enfoque puro con `jest.config.js`
-
-- `setup-jest.ts`), sustituyendo Karma/Jasmine.
+**Decision:** **Jest 29 + `jest-preset-angular`** (configuración propia con
+`jest.config.js` y `setup-jest.ts`), sustituyendo Karma/Jasmine.
 
 **Consequences:** Tests más rápidos y mejor DX, a cambio de configuración inicial.
 Notas de implementación:
