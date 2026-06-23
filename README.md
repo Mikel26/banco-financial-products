@@ -6,10 +6,12 @@
 ![Angular](https://img.shields.io/badge/Angular-17-DD0031?logo=angular&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript&logoColor=white)
 ![Jest](https://img.shields.io/badge/Jest-29.x-C21325?logo=jest&logoColor=white)
-![Coverage](https://img.shields.io/badge/coverage-70%2B-success)
+![Coverage](https://img.shields.io/badge/coverage-94%25-success)
 
-> **Estado:** scaffold inicial. La implementación de funcionalidades (F1–F5) se
-> desarrolla sobre esta base. Ver [Estado del proyecto](#-estado-del-proyecto).
+> **Estado:** Fases 0–3 completadas — listado (F1), búsqueda (F2) y selector de
+> cantidad + contador (F3) funcionando contra el backend real, sobre el design
+> system y la capa de datos. **En curso:** Fase 4 (formulario: agregar/editar).
+> Ver [Estado del proyecto](#-estado-del-proyecto).
 
 ---
 
@@ -43,11 +45,11 @@ pnpm test:coverage
 
 | #   | Funcionalidad                                          | Estado                             |
 | --- | ------------------------------------------------------ | ---------------------------------- |
-| F1  | Listado de productos financieros                       | ✅ Path SSR                        |
-| F2  | Búsqueda por texto (nombre / descripción)              | ✅ Path SSR                        |
-| F3  | Selector de cantidad (5, 10, 20) + total de resultados | ✅ Path SSR                        |
-| F4  | Agregar producto con validaciones                      | ✅ Path SSR                        |
-| F5  | Editar producto (id deshabilitado)                     | ✅ Deseable SSR, implementado      |
+| F1  | Listado de productos financieros                       | ✅ Implementado                    |
+| F2  | Búsqueda por texto (nombre / descripción)              | ✅ Implementado                    |
+| F3  | Selector de cantidad (5, 10, 20) + total de resultados | ✅ Implementado                    |
+| F4  | Agregar producto con validaciones                      | ⏳ En curso (Fase 4)               |
+| F5  | Editar producto (id deshabilitado)                     | ⏳ Pendiente (Fase 4)              |
 | F6  | Eliminar producto                                      | ❌ Alcance Senior — fuera de scope |
 
 **Calidad transversal aplicada como estándar habitual (no como features extra):**
@@ -98,7 +100,7 @@ pnpm test            # corre la suite
 pnpm test:coverage   # reporte de cobertura
 ```
 
-> Cobertura actual: _pendiente (se completa durante el desarrollo)_.
+> Cobertura actual (Fases 0–3): **~94.6 % statements / 95.45 % branches**, 75 tests.
 
 ---
 
@@ -134,16 +136,13 @@ se documentan como feedback para el equipo backend:
 
 ## 🗺️ Estado del proyecto
 
-- [x] Scaffold: estructura de carpetas + configuración base (Angular/Jest/ESLint/Prettier/Husky/proxy)
-- [ ] Design system SCSS + componentes shared
-- [ ] Models + ProductsApiService + interceptor + notification service
-- [ ] ProductsStateService (signals) + skeleton
-- [ ] F1/F2/F3 — ProductListComponent
-- [ ] Custom validators (id async, release date, revision date)
-- [ ] F4 — ProductFormComponent (agregar)
-- [ ] F5 — ProductFormComponent (editar) + lazy routes + unsaved-changes guard
-- [ ] Responsive + a11y polish
-- [ ] Tests ≥ 70 % + cierre de documentación
+- [x] **Fase 0** — Scaffold + bootstrap (estructura, config, la app arranca con proxy)
+- [x] **Fase 1** — Models + ProductsApiService + ProductsStateService (signals) + NotificationService + error interceptor
+- [x] **Fase 2** — Design system SCSS + componentes shared (button, text-input, select, date-input, header)
+- [x] **Fase 3** — F1 listado + skeleton (responsive) · F2 búsqueda (debounce) · F3 cantidad + contador
+- [ ] **Fase 4** — Custom validators (id async, release, revision) + F4 agregar + F5 editar + unsaved-changes guard + rutas `new`/`edit/:id`
+- [ ] **Fase 5** — Responsive del formulario + a11y polish final
+- [ ] **Fase 6** — Cobertura consolidada + cierre de documentación
 
 ---
 
