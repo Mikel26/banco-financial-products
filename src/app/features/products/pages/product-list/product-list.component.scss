@@ -40,6 +40,7 @@
   background: $color-background;
   border: 1px solid $color-border;
   border-radius: $radius-md;
+  box-shadow: $shadow-sm;
   overflow: hidden;
 
   th,
@@ -72,18 +73,32 @@
 }
 
 .logo {
+  position: relative;
   display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 40px;
   height: 40px;
   border-radius: 50%;
   background: $color-secondary;
+  color: $color-text-secondary;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
   overflow: hidden;
 
   &__img {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
+}
+
+.th-info {
+  margin-left: 4px;
+  color: $color-text-secondary;
+  font-size: 0.85em;
 }
 
 .products__empty,
@@ -116,6 +131,9 @@
 // En móvil la tabla colapsa a tarjetas apiladas: cada fila es una tarjeta y
 // cada celda muestra su etiqueta (`data-label`) a la izquierda y el valor a la
 // derecha. Sin frameworks, solo CSS.
+// En móvil cada fila es una tarjeta limpia (no una mini-tabla): cabecera con
+// logo + nombre arriba, y debajo las filas de detalle como pares etiqueta/valor,
+// sin líneas por fila. Se arma con CSS Grid sobre la estructura de la tabla.
 @include mobile {
   .products {
     overflow-x: visible;
@@ -129,22 +147,49 @@
     }
 
     tr {
-      display: block;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      align-items: center;
+      column-gap: $spacing-sm;
       margin-bottom: $spacing-md;
+      padding: $spacing-md;
       background: $color-background;
       border: 1px solid $color-border;
       border-radius: $radius-md;
-      overflow: hidden;
+      box-shadow: $shadow-sm;
     }
 
     td {
+      padding: 0;
+      border: none;
+    }
+
+    // Cabecera: logo (columna 1) + nombre grande (columna 2), sin etiquetas.
+    td:nth-child(1) {
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    td:nth-child(2) {
+      grid-column: 2;
+      grid-row: 1;
+      font-size: $font-size-lg;
+      font-weight: $font-weight-medium;
+    }
+
+    td:nth-child(1)::before,
+    td:nth-child(2)::before {
+      display: none;
+    }
+
+    // Filas de detalle a todo el ancho: etiqueta a la izquierda, valor a la derecha.
+    td:nth-child(n + 3) {
+      grid-column: 1 / -1;
       display: flex;
-      align-items: center;
       justify-content: space-between;
       gap: $spacing-md;
-      padding: $spacing-sm $spacing-md;
+      padding: $spacing-xs 0;
       text-align: right;
-      border-bottom: 1px solid $color-border;
 
       &::before {
         content: attr(data-label);
@@ -156,8 +201,11 @@
       }
     }
 
-    tbody tr td:last-child {
-      border-bottom: none;
+    // Único divisor: separa la cabecera del detalle.
+    td:nth-child(3) {
+      margin-top: $spacing-sm;
+      padding-top: $spacing-md;
+      border-top: 1px solid $color-border;
     }
 
     .cell-desc {

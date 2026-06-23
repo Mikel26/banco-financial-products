@@ -3,7 +3,7 @@
     <app-text-input
       class="products__search"
       [formControl]="searchControl"
-      placeholder="Buscar por nombre o descripción"
+      placeholder="Buscar..."
     />
   </div>
 
@@ -28,10 +28,12 @@
       <thead>
         <tr>
           <th scope="col">Logo</th>
-          <th scope="col">Nombre</th>
-          <th scope="col">Descripción</th>
-          <th scope="col">Fecha de liberación</th>
-          <th scope="col">Fecha de reestructuración</th>
+          <th scope="col">Nombre del producto</th>
+          <th scope="col">Descripción <span class="th-info" aria-hidden="true">ⓘ</span></th>
+          <th scope="col">Fecha de liberación <span class="th-info" aria-hidden="true">ⓘ</span></th>
+          <th scope="col">
+            Fecha de reestructuración <span class="th-info" aria-hidden="true">ⓘ</span>
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -39,6 +41,7 @@
           <tr>
             <td data-label="Logo">
               <span class="logo">
+                {{ initials(product.name) }}
                 <img
                   class="logo__img"
                   [src]="product.logo"

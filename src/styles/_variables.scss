@@ -1,6 +1,9 @@
 // Design tokens del sistema de diseño del Banco (sin frameworks de estilos).
 
 // Colores
+// Marca del banco (header/logo). El amarillo se reserva para acciones primarias
+// (botones Agregar/Enviar), según los diseños D1–D4 del PDF.
+$color-brand: #2b3b68;
 $color-primary: #ffd200;
 $color-primary-hover: #e5bc00;
 $color-secondary: #f3f3f3;

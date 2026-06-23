@@ -1,9 +1,19 @@
 <header class="header">
   <div class="header__brand">
-    <span class="header__logo" aria-hidden="true">🏦</span>
-    <span class="header__title">{{ title() }}</span>
+    <svg
+      class="header__icon"
+      width="22"
+      height="22"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M3 21h18M4 10h16M5 10l7-5 7 5M6 10v8M10 10v8M14 10v8M18 10v8" />
+    </svg>
+    <span class="header__name">{{ title() }}</span>
   </div>
-  @if (subtitle()) {
-    <span class="header__subtitle">{{ subtitle() }}</span>
-  }
 </header>

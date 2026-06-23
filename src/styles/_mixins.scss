@@ -76,8 +76,10 @@
     @include field-base;
     @include focus-visible;
 
+    // Foco de los campos en marino (no amarillo): el amarillo se reserva para
+    // las acciones primarias (botones), según los diseños del PDF.
     &:focus {
-      border-color: $color-primary;
+      border-color: $color-brand;
     }
 
     &--error,

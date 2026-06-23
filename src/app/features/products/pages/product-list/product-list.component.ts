@@ -60,8 +60,19 @@ export class ProductListComponent implements OnInit {
     this.state.loadProducts();
   }
 
-  /** Si el logo no carga, ocultamos la imagen y dejamos el marcador de fondo. */
+  /** Si el logo no carga, ocultamos la imagen y dejan ver las iniciales de fondo. */
   onLogoError(event: Event): void {
     (event.target as HTMLImageElement).style.display = 'none';
+  }
+
+  /** Iniciales del producto (hasta 2) para el marcador del logo, según diseño D1. */
+  initials(name: string): string {
+    return name
+      .trim()
+      .split(/\s+/)
+      .slice(0, 2)
+      .map((word) => word.charAt(0))
+      .join('')
+      .toUpperCase();
   }
 }
