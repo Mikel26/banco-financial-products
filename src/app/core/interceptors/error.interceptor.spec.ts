@@ -67,6 +67,9 @@ describe('errorInterceptor', () => {
     expect(resolveErrorMessage(new HttpErrorResponse({ status: 409 }))).toBe(
       'El recurso ya existe',
     );
+    expect(resolveErrorMessage(new HttpErrorResponse({ status: 500 }))).toBe(
+      'Error del servidor. Inténtalo más tarde',
+    );
     expect(resolveErrorMessage(new HttpErrorResponse({ status: 503 }))).toBe(
       'Error del servidor. Inténtalo más tarde',
     );

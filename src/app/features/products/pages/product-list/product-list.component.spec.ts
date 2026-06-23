@@ -75,6 +75,11 @@ describe('ProductListComponent', () => {
     expect(img.style.display).toBe('none');
   });
 
+  it('initials() deriva hasta dos iniciales del nombre', () => {
+    expect(component.initials('Visa Gold Premium')).toBe('VG');
+    expect(component.initials('Mastercard')).toBe('M');
+  });
+
   it('filtra la lista al escribir en la búsqueda (con debounce)', fakeAsync(() => {
     fixture.detectChanges();
     httpMock.expectOne(url).flush({
