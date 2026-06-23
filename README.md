@@ -100,7 +100,7 @@ pnpm test            # corre la suite
 pnpm test:coverage   # reporte de cobertura
 ```
 
-> Cobertura actual (Fases 0–3): **~94.6 % statements / 95.45 % branches**, 75 tests.
+> Cobertura actual: **~95.3 % statements / 97.3 % branches**, 87 tests.
 
 ---
 
