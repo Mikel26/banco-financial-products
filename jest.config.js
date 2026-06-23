@@ -23,6 +23,7 @@ module.exports = {
     '!src/app/**/*.spec.ts',
     '!src/app/**/index.ts',
     '!src/app/**/*.routes.ts',
+    '!src/app/app.config.ts',
     '!src/main.ts'
   ],
   coverageReporters: ['html', 'text', 'text-summary', 'lcov']
