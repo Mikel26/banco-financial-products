@@ -2,8 +2,10 @@ import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 
+import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import {
   SelectComponent,
   SelectOption,
@@ -26,6 +28,7 @@ import { PageSize, ProductsStateService } from '../../services/products-state.se
     ReactiveFormsModule,
     TextInputComponent,
     SelectComponent,
+    ButtonComponent,
     ProductTableSkeletonComponent,
   ],
   templateUrl: './product-list.component.html',
@@ -34,6 +37,7 @@ import { PageSize, ProductsStateService } from '../../services/products-state.se
 })
 export class ProductListComponent implements OnInit {
   readonly state = inject(ProductsStateService);
+  private readonly router = inject(Router);
 
   /** Búsqueda (F2): se aplica con debounce para no filtrar en cada pulsación. */
   readonly searchControl = new FormControl('', { nonNullable: true });
@@ -58,6 +62,11 @@ export class ProductListComponent implements OnInit {
 
   ngOnInit(): void {
     this.state.loadProducts();
+  }
+
+  /** Navega al formulario de alta (F4). */
+  goToNew(): void {
+    this.router.navigate(['/products/new']);
   }
 
   /** Si el logo no carga, ocultamos la imagen y dejan ver las iniciales de fondo. */

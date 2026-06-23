@@ -5,6 +5,7 @@
       [formControl]="searchControl"
       placeholder="Buscar..."
     />
+    <app-button (clicked)="goToNew()">Agregar</app-button>
   </div>
 
   @if (state.loading()) {

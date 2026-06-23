@@ -1,0 +1,15 @@
+<div class="notifications" aria-live="polite">
+  @for (notification of notifications(); track notification.id) {
+    <div class="toast toast--{{ notification.type }}" role="status">
+      <span class="toast__message">{{ notification.message }}</span>
+      <button
+        class="toast__close"
+        type="button"
+        aria-label="Cerrar notificación"
+        (click)="dismiss(notification.id)"
+      >
+        ×
+      </button>
+    </div>
+  }
+</div>

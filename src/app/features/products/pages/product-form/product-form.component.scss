@@ -1,0 +1,36 @@
+@use 'variables' as *;
+
+.form-page {
+  display: flex;
+  justify-content: center;
+}
+
+.product-form {
+  width: 100%;
+  max-width: 640px;
+  padding: $spacing-xl;
+  background: $color-background;
+  border: 1px solid $color-border;
+  border-radius: $radius-md;
+  box-shadow: $shadow-sm;
+
+  &__title {
+    margin: 0 0 $spacing-xl;
+    text-align: center;
+    font-size: $font-size-xl;
+  }
+
+  // 2 columnas en escritorio; colapsa a 1 en pantallas estrechas (auto-fit).
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: $spacing-lg;
+  }
+
+  &__actions {
+    display: flex;
+    justify-content: center;
+    gap: $spacing-md;
+    margin-top: $spacing-xl;
+  }
+}

@@ -1,6 +1,7 @@
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { Router, provideRouter } from '@angular/router';
 
 import { Product } from '../../models/product.model';
 import { ProductListComponent } from './product-list.component';
@@ -26,7 +27,7 @@ describe('ProductListComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ProductListComponent],
-      providers: [provideHttpClient(), provideHttpClientTesting()],
+      providers: [provideHttpClient(), provideHttpClientTesting(), provideRouter([])],
     });
     httpMock = TestBed.inject(HttpTestingController);
     fixture = TestBed.createComponent(ProductListComponent);
@@ -129,5 +130,20 @@ describe('ProductListComponent', () => {
     expect(fixture.nativeElement.querySelector('.products__count').textContent).toContain(
       '12 Resultados',
     );
+  });
+
+  it('navega al formulario de alta al pulsar Agregar (F4)', () => {
+    const router = TestBed.inject(Router);
+    const navSpy = jest.spyOn(router, 'navigate').mockResolvedValue(true);
+    fixture.detectChanges();
+    httpMock.expectOne(url).flush({ data: [] });
+    fixture.detectChanges();
+
+    const buttons: HTMLButtonElement[] = Array.from(
+      fixture.nativeElement.querySelectorAll('button'),
+    );
+    buttons.find((b) => b.textContent?.includes('Agregar'))?.click();
+
+    expect(navSpy).toHaveBeenCalledWith(['/products/new']);
   });
 });

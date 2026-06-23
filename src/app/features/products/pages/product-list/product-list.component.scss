@@ -8,11 +8,16 @@
 }
 
 .products__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $spacing-md;
   margin-bottom: $spacing-lg;
 }
 
 .products__search {
   display: block;
+  flex: 1;
   max-width: 360px;
 }
 
@@ -137,6 +142,15 @@
 @include mobile {
   .products {
     overflow-x: visible;
+  }
+
+  .products__toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .products__search {
+    max-width: none;
   }
 
   .products-table {

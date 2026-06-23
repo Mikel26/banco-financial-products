@@ -48,7 +48,7 @@ pnpm test:coverage
 | F1  | Listado de productos financieros                       | ✅ Implementado                    |
 | F2  | Búsqueda por texto (nombre / descripción)              | ✅ Implementado                    |
 | F3  | Selector de cantidad (5, 10, 20) + total de resultados | ✅ Implementado                    |
-| F4  | Agregar producto con validaciones                      | ⏳ En curso (Fase 4)               |
+| F4  | Agregar producto con validaciones                      | ✅ Implementado                    |
 | F5  | Editar producto (id deshabilitado)                     | ⏳ Pendiente (Fase 4)              |
 | F6  | Eliminar producto                                      | ❌ Alcance Senior — fuera de scope |
 
@@ -100,7 +100,7 @@ pnpm test            # corre la suite
 pnpm test:coverage   # reporte de cobertura
 ```
 
-> Cobertura actual: **~95.3 % statements / 97.3 % branches**, 87 tests.
+> Cobertura actual: **~96.7 % statements / 98 % branches**, 100 tests.
 
 ---
 
