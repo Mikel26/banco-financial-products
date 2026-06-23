@@ -1,17 +1,18 @@
 # 🏦 Banco — Gestión de Productos Financieros
 
 > Frontend Angular para la gestión de productos financieros del Banco.
-> Reto técnico **NTT Data** — Posición **Angular SSR** (Semi-Senior).
+> Reto técnico **NTT Data** — Posición **Angular SSR** (Semi-Senior, nivel de la
+> vacante; **no** Server-Side Rendering — ver [ADR-007](./DECISIONS.md)).
 
 ![Angular](https://img.shields.io/badge/Angular-17-DD0031?logo=angular&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript&logoColor=white)
 ![Jest](https://img.shields.io/badge/Jest-29.x-C21325?logo=jest&logoColor=white)
-![Coverage](https://img.shields.io/badge/coverage-97%25-success)
+![Coverage](https://img.shields.io/badge/coverage-98%25-success)
 
-> **Estado:** Fases 0–5 completadas — listado/búsqueda/cantidad (F1–F3), alta
-> con validaciones (F4) y edición con guard de cambios sin guardar (F5),
-> formulario responsive y pulido de accesibilidad, funcionando contra el backend
-> real. **Siguiente:** Fase 6 (cobertura consolidada + cierre de documentación).
+> **Estado:** Proyecto completo (Fases 0–6) — listado/búsqueda/cantidad (F1–F3),
+> alta con validaciones (F4) y edición con guard de cambios sin guardar (F5),
+> formulario responsive y pulido de accesibilidad, con cobertura consolidada y
+> documentación cerrada, funcionando contra el backend real.
 > Ver [Estado del proyecto](#-estado-del-proyecto).
 
 ---
@@ -66,10 +67,10 @@ pnpm test:coverage
 
 ```
 src/app/
-├── core/        ← singleton app-wide: interceptors, guards, services
+├── core/        ← singleton app-wide: interceptors, guards, services, components (notifications)
 ├── shared/      ← UI reutilizable: button, text-input, select, date-input, header
 └── features/
-    └── products/← feature con lazy loading: models, services, validators, pages
+    └── products/← feature (lazy): models, services, validators, components (skeleton, row-menu), pages
 src/styles/      ← design system SCSS (variables, mixins, reset, typography)
 ```
 
@@ -101,7 +102,7 @@ pnpm test            # corre la suite
 pnpm test:coverage   # reporte de cobertura
 ```
 
-> Cobertura actual: **~97 % statements / 98.5 % branches**, 118 tests.
+> Cobertura actual: **98.5 % statements / 100 % branches / 100 % lines**, 122 tests.
 
 ---
 
@@ -143,7 +144,7 @@ se documentan como feedback para el equipo backend:
 - [x] **Fase 3** — F1 listado + skeleton (responsive) · F2 búsqueda (debounce) · F3 cantidad + contador
 - [x] **Fase 4** — Custom validators (id async, release, revision) + F4 agregar + F5 editar + unsaved-changes guard + rutas `new`/`edit/:id` + toasts
 - [x] **Fase 5** — Formulario responsive (acciones a ancho completo en móvil) + pulido a11y (`aria-required`, `aria-busy`, `novalidate`, ayuda en campo autocalculado)
-- [ ] **Fase 6** — Cobertura consolidada + cierre de documentación
+- [x] **Fase 6** — Cobertura consolidada + cierre de documentación (auditoría multi-agente, nombres accesibles en la toolbar del listado, limpieza de scaffold)
 
 ---
 
