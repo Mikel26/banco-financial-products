@@ -11,6 +11,7 @@ import {
   SelectOption,
 } from '../../../../shared/components/select/select.component';
 import { TextInputComponent } from '../../../../shared/components/text-input/text-input.component';
+import { ProductRowMenuComponent } from '../../components/product-row-menu/product-row-menu.component';
 import { ProductTableSkeletonComponent } from '../../components/product-table-skeleton/product-table-skeleton.component';
 import { PageSize, ProductsStateService } from '../../services/products-state.service';
 
@@ -29,6 +30,7 @@ import { PageSize, ProductsStateService } from '../../services/products-state.se
     TextInputComponent,
     SelectComponent,
     ButtonComponent,
+    ProductRowMenuComponent,
     ProductTableSkeletonComponent,
   ],
   templateUrl: './product-list.component.html',
@@ -67,6 +69,11 @@ export class ProductListComponent implements OnInit {
   /** Navega al formulario de alta (F4). */
   goToNew(): void {
     this.router.navigate(['/products/new']);
+  }
+
+  /** Navega al formulario de edición de un producto (F5). */
+  goToEdit(id: string): void {
+    this.router.navigate(['/products/edit', id]);
   }
 
   /** Si el logo no carga, ocultamos la imagen y dejan ver las iniciales de fondo. */

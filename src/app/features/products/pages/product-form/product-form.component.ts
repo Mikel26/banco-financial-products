@@ -1,14 +1,15 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { finalize } from 'rxjs';
 
+import { CanComponentDeactivate } from '../../../../core/guards/unsaved-changes.guard';
 import { NotificationService } from '../../../../core/services/notification.service';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { DateInputComponent } from '../../../../shared/components/date-input/date-input.component';
 import { TextInputComponent } from '../../../../shared/components/text-input/text-input.component';
-import { ProductCreate } from '../../models/product.model';
+import { Product, ProductCreate, ProductUpdate } from '../../models/product.model';
 import { ProductsApiService } from '../../services/products-api.service';
 import { ProductsStateService } from '../../services/products-state.service';
 import { idUniqueValidator } from '../../validators/id-unique.validator';
@@ -17,8 +18,10 @@ import { releaseDateValidator } from '../../validators/release-date.validator';
 import { revisionDateValidator } from '../../validators/revision-date.validator';
 
 /**
- * Formulario de alta de producto (F4), maquetado según el diseño D2.
- * La fecha de revisión se autocompleta (liberación + 1 año) y queda deshabilitada.
+ * Formulario de alta (F4) y edición (F5), maquetado según el diseño D2.
+ * - La fecha de revisión se autocompleta (liberación + 1 año) y queda deshabilitada.
+ * - En edición, el `id` se carga y se deshabilita; el envío hace `PUT` en vez de `POST`.
+ * Implementa `CanComponentDeactivate` para el guard de cambios sin guardar.
  */
 @Component({
   selector: 'app-product-form',
@@ -28,15 +31,27 @@ import { revisionDateValidator } from '../../validators/revision-date.validator'
   styleUrl: './product-form.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductFormComponent {
+export class ProductFormComponent implements CanComponentDeactivate {
   private readonly fb = inject(FormBuilder);
   private readonly api = inject(ProductsApiService);
   private readonly state = inject(ProductsStateService);
   private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
   private readonly notification = inject(NotificationService);
 
+  private readonly editId = this.route.snapshot.paramMap.get('id');
+  readonly isEdit = this.editId !== null;
   readonly submitting = signal(false);
   readonly today = formatLocalDate(new Date());
+
+  /** Se activa al navegar tras un guardado exitoso (evita el aviso del guard). */
+  private leaving = false;
+
+  /**
+   * Valores del producto cargado en edición. En ese modo "Reiniciar" descarta
+   * los cambios y restaura este punto (sin vaciar el `id`); en alta es `null`.
+   */
+  private pristineValue: ProductCreate | null = null;
 
   readonly form = this.fb.nonNullable.group({
     id: [
@@ -68,6 +83,31 @@ export class ProductFormComponent {
       const revision = new Date(date);
       revision.setFullYear(revision.getFullYear() + 1);
       this.form.controls.date_revision.setValue(formatLocalDate(revision));
+    });
+
+    if (this.editId !== null) {
+      this.loadForEdit(this.editId);
+    }
+  }
+
+  /** Carga el producto a editar (del estado en memoria o, si no, del backend). */
+  private loadForEdit(id: string): void {
+    this.form.controls.id.disable();
+    const existing = this.state.findById(id);
+    if (existing) {
+      this.form.patchValue(existing);
+      this.pristineValue = this.form.getRawValue();
+      return;
+    }
+    this.api.getById(id).subscribe({
+      next: (product: Product) => {
+        this.form.patchValue(product);
+        this.pristineValue = this.form.getRawValue();
+      },
+      error: () => {
+        this.notification.showError('No se encontró el producto a editar');
+        this.router.navigate(['/products']);
+      },
     });
   }
 
@@ -106,20 +146,36 @@ export class ProductFormComponent {
       return;
     }
     this.submitting.set(true);
-    const product = this.form.getRawValue() as ProductCreate;
-    this.state
-      .addProduct(product)
-      .pipe(finalize(() => this.submitting.set(false)))
-      .subscribe({
-        next: () => {
-          this.notification.showSuccess('Producto creado correctamente');
-          this.router.navigate(['/products']);
-        },
-        error: () => undefined,
-      });
+    const raw = this.form.getRawValue();
+    const request$ =
+      this.isEdit && this.editId !== null
+        ? this.state.updateProduct(this.editId, this.toUpdate(raw))
+        : this.state.addProduct(raw as ProductCreate);
+
+    request$.pipe(finalize(() => this.submitting.set(false))).subscribe({
+      next: () => {
+        this.leaving = true;
+        this.notification.showSuccess(
+          this.isEdit ? 'Producto actualizado correctamente' : 'Producto creado correctamente',
+        );
+        this.router.navigate(['/products']);
+      },
+      error: () => undefined,
+    });
   }
 
   onReset(): void {
-    this.form.reset();
+    // En edición restaura el producto cargado (sin vaciar el id deshabilitado);
+    // en alta, `pristineValue` es null y `reset` limpia el formulario.
+    this.form.reset(this.pristineValue ?? undefined);
+  }
+
+  canDeactivate(): boolean {
+    return this.leaving || !this.form.dirty;
+  }
+
+  private toUpdate(raw: ProductCreate): ProductUpdate {
+    const { name, description, logo, date_release, date_revision } = raw;
+    return { name, description, logo, date_release, date_revision };
   }
 }

@@ -1,10 +1,8 @@
 import { Routes } from '@angular/router';
 
-/**
- * Rutas del feature `products` (cargado lazy desde `app.routes`).
- * La ruta de edición (`edit/:id`) y el guard de cambios sin guardar se añaden
- * en el paso F5.
- */
+import { unsavedChangesGuard } from '../../core/guards/unsaved-changes.guard';
+
+/** Rutas del feature `products` (cargado lazy desde `app.routes`). */
 export const PRODUCTS_ROUTES: Routes = [
   {
     path: '',
@@ -15,5 +13,12 @@ export const PRODUCTS_ROUTES: Routes = [
     path: 'new',
     loadComponent: () =>
       import('./pages/product-form/product-form.component').then((m) => m.ProductFormComponent),
+    canDeactivate: [unsavedChangesGuard],
+  },
+  {
+    path: 'edit/:id',
+    loadComponent: () =>
+      import('./pages/product-form/product-form.component').then((m) => m.ProductFormComponent),
+    canDeactivate: [unsavedChangesGuard],
   },
 ];

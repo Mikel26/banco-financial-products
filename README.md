@@ -8,10 +8,10 @@
 ![Jest](https://img.shields.io/badge/Jest-29.x-C21325?logo=jest&logoColor=white)
 ![Coverage](https://img.shields.io/badge/coverage-94%25-success)
 
-> **Estado:** Fases 0–3 completadas — listado (F1), búsqueda (F2) y selector de
-> cantidad + contador (F3) funcionando contra el backend real, sobre el design
-> system y la capa de datos. **En curso:** Fase 4 (formulario: agregar/editar).
-> Ver [Estado del proyecto](#-estado-del-proyecto).
+> **Estado:** Fases 0–4 completadas — listado/búsqueda/cantidad (F1–F3), alta
+> con validaciones (F4) y edición con guard de cambios sin guardar (F5),
+> funcionando contra el backend real. **Siguiente:** Fase 5 (responsive del
+> formulario + pulido final). Ver [Estado del proyecto](#-estado-del-proyecto).
 
 ---
 
@@ -49,7 +49,7 @@ pnpm test:coverage
 | F2  | Búsqueda por texto (nombre / descripción)              | ✅ Implementado                    |
 | F3  | Selector de cantidad (5, 10, 20) + total de resultados | ✅ Implementado                    |
 | F4  | Agregar producto con validaciones                      | ✅ Implementado                    |
-| F5  | Editar producto (id deshabilitado)                     | ⏳ Pendiente (Fase 4)              |
+| F5  | Editar producto (id deshabilitado)                     | ✅ Implementado                    |
 | F6  | Eliminar producto                                      | ❌ Alcance Senior — fuera de scope |
 
 **Calidad transversal aplicada como estándar habitual (no como features extra):**
@@ -100,7 +100,7 @@ pnpm test            # corre la suite
 pnpm test:coverage   # reporte de cobertura
 ```
 
-> Cobertura actual: **~96.7 % statements / 98 % branches**, 100 tests.
+> Cobertura actual: **~97 % statements / 98.5 % branches**, 114 tests.
 
 ---
 
@@ -140,7 +140,7 @@ se documentan como feedback para el equipo backend:
 - [x] **Fase 1** — Models + ProductsApiService + ProductsStateService (signals) + NotificationService + error interceptor
 - [x] **Fase 2** — Design system SCSS + componentes shared (button, text-input, select, date-input, header)
 - [x] **Fase 3** — F1 listado + skeleton (responsive) · F2 búsqueda (debounce) · F3 cantidad + contador
-- [ ] **Fase 4** — Custom validators (id async, release, revision) + F4 agregar + F5 editar + unsaved-changes guard + rutas `new`/`edit/:id`
+- [x] **Fase 4** — Custom validators (id async, release, revision) + F4 agregar + F5 editar + unsaved-changes guard + rutas `new`/`edit/:id` + toasts
 - [ ] **Fase 5** — Responsive del formulario + a11y polish final
 - [ ] **Fase 6** — Cobertura consolidada + cierre de documentación
 

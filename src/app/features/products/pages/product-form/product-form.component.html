@@ -1,6 +1,8 @@
 <section class="form-page">
   <form class="product-form" [formGroup]="form" (ngSubmit)="onSubmit()">
-    <h1 class="product-form__title">Formulario de Registro</h1>
+    <h1 class="product-form__title">
+      {{ isEdit ? 'Editar Producto' : 'Formulario de Registro' }}
+    </h1>
 
     <div class="product-form__grid">
       <app-text-input formControlName="id" label="ID" [errorMessage]="errorFor('id')" />

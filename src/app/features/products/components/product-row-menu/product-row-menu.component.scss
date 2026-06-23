@@ -1,0 +1,47 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.row-menu {
+  position: relative;
+  display: inline-flex;
+}
+
+.row-menu__trigger {
+  width: 32px;
+  height: 32px;
+  border-radius: $radius-sm;
+  font-size: $font-size-xl;
+  line-height: 1;
+  color: $color-text-secondary;
+  @include focus-visible;
+
+  &:hover {
+    background: $color-secondary;
+  }
+}
+
+// Overlay `fixed` (posición calculada en el componente) para que no lo recorten
+// el `overflow` de la tabla ni el del contenedor con scroll.
+.row-menu__dropdown {
+  position: fixed;
+  z-index: 1000;
+  min-width: 140px;
+  padding: $spacing-xs;
+  background: $color-background;
+  border: 1px solid $color-border;
+  border-radius: $radius-sm;
+  box-shadow: $shadow-md;
+}
+
+.row-menu__item {
+  display: block;
+  width: 100%;
+  padding: $spacing-sm $spacing-md;
+  text-align: left;
+  border-radius: $radius-sm;
+  @include focus-visible;
+
+  &:hover {
+    background: $color-secondary;
+  }
+}

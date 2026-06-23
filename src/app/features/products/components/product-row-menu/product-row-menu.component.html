@@ -1,0 +1,25 @@
+<div class="row-menu">
+  <button
+    class="row-menu__trigger"
+    type="button"
+    aria-haspopup="menu"
+    [attr.aria-expanded]="open()"
+    aria-label="Acciones del producto"
+    (click)="toggle($event)"
+  >
+    ⋮
+  </button>
+
+  @if (open() && position(); as pos) {
+    <div
+      class="row-menu__dropdown"
+      role="menu"
+      [style.top.px]="pos.top"
+      [style.right.px]="pos.right"
+    >
+      <button class="row-menu__item" type="button" role="menuitem" (click)="onEdit()">
+        Editar
+      </button>
+    </div>
+  }
+</div>
