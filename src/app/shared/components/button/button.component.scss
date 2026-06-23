@@ -1,7 +1,15 @@
 @use 'variables' as *;
 @use 'mixins' as *;
 
+// El host envuelve el botón ajustado a su contenido por defecto; un contenedor
+// puede ponerlo a `display: block`/`flex` para estirarlo (p. ej. acciones a
+// ancho completo en móvil) sin que el botón se quede corto.
+:host {
+  display: inline-flex;
+}
+
 .btn {
+  width: 100%;
   display: inline-flex;
   align-items: center;
   justify-content: center;

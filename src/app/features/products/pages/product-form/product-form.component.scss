@@ -1,8 +1,14 @@
 @use 'variables' as *;
+@use 'mixins' as *;
 
 .form-page {
   display: flex;
   justify-content: center;
+  padding: $spacing-lg;
+
+  @include mobile {
+    padding: $spacing-md;
+  }
 }
 
 .product-form {
@@ -14,10 +20,19 @@
   border-radius: $radius-md;
   box-shadow: $shadow-sm;
 
+  @include mobile {
+    padding: $spacing-lg;
+  }
+
   &__title {
     margin: 0 0 $spacing-xl;
     text-align: center;
     font-size: $font-size-xl;
+
+    @include mobile {
+      margin-bottom: $spacing-lg;
+      font-size: $font-size-lg;
+    }
   }
 
   // 2 columnas en escritorio; colapsa a 1 en pantallas estrechas (auto-fit).
@@ -32,5 +47,15 @@
     justify-content: center;
     gap: $spacing-md;
     margin-top: $spacing-xl;
+
+    // En móvil: acciones apiladas a ancho completo, con "Enviar" arriba.
+    @include mobile {
+      flex-direction: column-reverse;
+      gap: $spacing-sm;
+
+      app-button {
+        display: flex;
+      }
+    }
   }
 }
