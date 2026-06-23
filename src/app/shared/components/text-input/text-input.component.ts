@@ -27,6 +27,8 @@ export class TextInputComponent implements ControlValueAccessor {
   readonly type = input<'text' | 'email' | 'password'>('text');
   readonly errorMessage = input<string | null>(null);
   readonly required = input<boolean>(false);
+  /** Nombre accesible cuando no hay `label` visible (p. ej. en una toolbar). */
+  readonly ariaLabel = input<string>('');
 
   readonly inputId = `app-text-input-${(uniqueId += 1)}`;
   readonly value = signal<string>('');

@@ -80,6 +80,22 @@ describe('SelectComponent', () => {
     expect((options[1] as HTMLOptionElement).selected).toBe(true);
   });
 
+  it('writeValue(null) limpia la selección', () => {
+    const fixture = setup();
+    fixture.componentInstance.writeValue(10);
+    fixture.componentInstance.writeValue(null);
+    expect(fixture.componentInstance.value()).toBeNull();
+  });
+
+  it('aplica aria-label al <select> cuando se provee', () => {
+    const fixture = setup();
+    fixture.componentRef.setInput('ariaLabel', 'Cantidad a mostrar');
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('select').getAttribute('aria-label')).toBe(
+      'Cantidad a mostrar',
+    );
+  });
+
   it('onBlur dispara onTouched', () => {
     const fixture = setup();
     let touched = false;

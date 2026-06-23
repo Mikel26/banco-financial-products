@@ -79,4 +79,13 @@ describe('TextInputComponent', () => {
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('input').getAttribute('aria-required')).toBe('true');
   });
+
+  it('aplica aria-label al input cuando se provee', () => {
+    const fixture = TestBed.createComponent(TextInputComponent);
+    fixture.componentRef.setInput('ariaLabel', 'Buscar productos');
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('input').getAttribute('aria-label')).toBe(
+      'Buscar productos',
+    );
+  });
 });

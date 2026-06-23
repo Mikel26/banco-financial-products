@@ -28,6 +28,8 @@ export class SelectComponent implements ControlValueAccessor {
   readonly options = input<SelectOption[]>([]);
   readonly placeholder = input<string>('');
   readonly errorMessage = input<string | null>(null);
+  /** Nombre accesible cuando no hay `label` visible (p. ej. en una toolbar). */
+  readonly ariaLabel = input<string>('');
 
   readonly selectId = `app-select-${(uniqueId += 1)}`;
   readonly value = signal<string | number | null>(null);

@@ -7,6 +7,7 @@
     [id]="selectId"
     [disabled]="disabled()"
     [class.field__control--error]="!!errorMessage()"
+    [attr.aria-label]="ariaLabel() || null"
     [attr.aria-invalid]="!!errorMessage()"
     [attr.aria-describedby]="errorMessage() ? selectId + '-error' : null"
     (change)="onSelect($event)"

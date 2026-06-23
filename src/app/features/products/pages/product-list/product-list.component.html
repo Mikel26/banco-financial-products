@@ -3,6 +3,7 @@
     <app-text-input
       class="products__search"
       [formControl]="searchControl"
+      ariaLabel="Buscar productos"
       placeholder="Buscar..."
     />
     <app-button (clicked)="goToNew()">Agregar</app-button>
@@ -79,6 +80,7 @@
         class="products__page-size"
         [options]="pageSizeOptions"
         [formControl]="pageSizeControl"
+        ariaLabel="Cantidad de productos a mostrar"
       />
     </div>
   }
